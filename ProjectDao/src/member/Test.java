@@ -11,8 +11,11 @@ public class Test {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("beans.xml");
         MemberDAO dao = applicationContext.getBean("Member_DaoImpl",MemberDAO.class);
+
         String id = "jung@gmail.com";
-        String id_new = "EE@gmail.com";
+        String id_new = new String("ee1@gmail.com");
+        String id_new1 = "hwang@naver.com";
+        String id_new_name = "EE";
         String password1 = "3331";
         String password2 = "22222";
 
@@ -26,21 +29,25 @@ public class Test {
         Skill python = new Skill(python_name,"");
 
 
-        //아이디로 회원정보 찾기
-        prn_member_info(id, dao);
+        //회원정보 확인
+//        prn_member_info(id, dao);
 
+        //회원 추가
+//        dao.add_member(id_new, password1,id_new_name,"member","프로필미작성", null);
+       
 
-        dao.add_member_job(id_new,backend);
+//        dao.add_member_job(id_new,backend);
         prn_member_info(id_new, dao);
 
 //        dao.add_member_skill(id_new,python);
 //        dao.delete_member_job(id_new,backend);
 //        dao.delete_member_skill(id_new,python);
-//        dao.update_auth(id_new,"프로필작성완료");
+//        dao.update_auth(id_new,"프로필미작성");
 //        dao.update_password(id_new, password1);
 
-
         ((ClassPathXmlApplicationContext)applicationContext).close();
+        
+        System.out.println("끝");
 
     }
 

@@ -5,6 +5,8 @@ import member.dto.Job;
 import member.dto.Member;
 import member.dto.Skill;
 import member.model.MemberInfo;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
@@ -19,33 +21,39 @@ public class MemberDAOImpl extends JdbcDaoSupport implements MemberDAO {
     @Override
     public MemberInfo get_member_info(String id) {
         String sql = "select * from member join (SELECT * from member_job join member_skill using (id) where id = ? ) using (id)";
-        MemberInfo memberInfoList = getJdbcTemplate().queryForObject(sql, new RowMapper<MemberInfo>() {
-            @Override
-            public MemberInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
-                MemberInfo memberInfo = new MemberInfo();
+        MemberInfo memberInfoList = null;
+        try {
+        	  memberInfoList = getJdbcTemplate().queryForObject(sql, new RowMapper<MemberInfo>() {
+                 @Override
+                 public MemberInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
+                     MemberInfo memberInfo = new MemberInfo();
 
-                Member member = new Member(rs.getString(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5),
-                        rs.getString(6)
-                );
-                Job job = new Job(rs.getString(7), "");
-                List<Job> jobs = new ArrayList<>();
-                jobs.add(job);
+                     Member member = new Member(rs.getString(1),
+                             rs.getString(2),
+                             rs.getString(3),
+                             rs.getString(4),
+                             rs.getString(5),
+                             rs.getString(6)
+                     );
+                     Job job = new Job(rs.getString(7), "");
+                     List<Job> jobs = new ArrayList<>();
+                     jobs.add(job);
 
-                Skill skill = new Skill(rs.getString(8), "");
-                List<Skill> skills = new ArrayList<>();
-                skills.add(skill);
+                     Skill skill = new Skill(rs.getString(8), "");
+                     List<Skill> skills = new ArrayList<>();
+                     skills.add(skill);
 
-                memberInfo.setMember(member);
-                memberInfo.setJob(jobs);
-                memberInfo.setSkill(skills);
+                     memberInfo.setMember(member);
+                     memberInfo.setJob(jobs);
+                     memberInfo.setSkill(skills);
 
-                return memberInfo;
-            }
-        }, new Object[]{id});
+                     return memberInfo;
+                 }
+             }, new Object[]{id});
+        }catch (EmptyResultDataAccessException e) {
+			e.printStackTrace();
+		}
+       
         return memberInfoList;
     }
 
@@ -90,15 +98,20 @@ public class MemberDAOImpl extends JdbcDaoSupport implements MemberDAO {
     }
 
     @Override
-    public int add_member(String id, String password, String type, String auth, String certificate) {
-        String sql = "insert into member(id, password, name, type, auth, certificate) values(?,?,?,?,?);";
-        getJdbcTemplate().update(sql, new Object[] {id, password, type, auth, certificate});
+    public int add_member(String id, String password, String type,String name, String auth, String certificate) {
+        String sql = "insert into member(id, password, name, type, auth, certificate) values(?,?,?,?,?,?)";
+        getJdbcTemplate().update(sql, new Object[] {id, password, name, type, auth, certificate});
         return 0;
     }
 
+    @Override
+    public int delete_member(String id, String password) {
+        String sql = "delete member where id = ? AND password = ?";
+        getJdbcTemplate().update(sql, new Object[] {id, password});
+        return 0;
+    }
 
-
-//    public MemberInfo get_member_info_pro(String id) {
+    //    public MemberInfo get_member_info_pro(String id) {
 //
 //        List<SqlParameter> parameters = Arrays.asList(
 //                new SqlParameter(Types.VARCHAR), new SqlOutParameter("res_cursor", Types.REF_CURSOR));

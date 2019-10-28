@@ -10,10 +10,16 @@
 		<property name="username" value="TESTMAN" />
 		<property name="password" value="TESTMAN" />
 	</bean>
-	<bean id="IT_Introduction_DaoImpl" class="it_introduction.dao.DaoImpl">
+	<bean id="IT_Introduction_DaoImpl"
+		class="it_introduction.dao.DaoImpl">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
-	<bean id="Offer_management_DaoImpl" class="offer_management.dao.DaoImpl">
+	<bean id="Offer_management_DaoImpl"
+		class="offer_management.dao.DaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<bean id="Member_DaoImpl" class="member.dao.MemberDAOImpl">
 		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 </beans>

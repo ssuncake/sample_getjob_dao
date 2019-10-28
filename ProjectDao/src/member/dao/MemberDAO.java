@@ -17,5 +17,6 @@ MemberInfo get_member_info(String id);
     int delete_member_skill(String id, Skill skill);
     int add_member_job(String id, Job job);
     int delete_member_job(String id, Job job);
-    int add_member(String id, String password,  String type,  String auth, String certificate);
+    int add_member(String id, String password, String name, String type,  String auth, String certificate);
+    int delete_member(String id, String password);
 }
