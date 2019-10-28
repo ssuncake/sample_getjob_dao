@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver"
+		p:url="jdbc:oracle:thin:@localhost:1521:xe">
+		<property name="username" value="TESTMAN" />
+		<property name="password" value="TESTMAN" />
+	</bean>
+	<bean id="IT_Introduction_DaoImpl" class="it_introduction.dao.DaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<bean id="Offer_management_DaoImpl" class="offer_management.dao.DaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+</beans>
